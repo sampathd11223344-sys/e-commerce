@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checkout</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<center style="margin-top:50px;color:white;">
+<h2>Checkout</h2>
+<input placeholder="Enter Address"><br><br>
+<input placeholder="Phone Number"><br><br>
+<button onclick="placeOrder()">Place Order</button>
+</center>
+
+<script>
+function placeOrder(){
+    alert("Order Placed Successfully!");
+    localStorage.removeItem("cart");
+    window.location="index.html";
+}
+</script>
+
+</body>
+</html>
