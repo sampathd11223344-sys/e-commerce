@@ -1,24 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Foodie Mart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-    <h1>🍔 Foodie Mart</h1>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
-        <a href="login.html">Login</a>
-        <a href="admin.html">Admin</a>
-    </nav>
-</header>
+    <!-- HEADER -->
+    <header>
+        <h1>Foodie Mart</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+            <a href="login.html">Login</a>
+        </nav>
+    </header>
 
-<section class="products" id="product-list"></section>
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <h2>Fast. Fresh. <span>Delivered.</span></h2>
+        <p>Your favourite meals just one click away.</p>
+    </section>
 
-<script src="script.js"></script>
+    <!-- SEARCH & FILTER -->
+    <div class="controls">
+        <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search food..." 
+            onkeyup="filterProducts()"
+        >
+
+        <select id="categoryFilter" onchange="filterProducts()">
+            <option value="all">All</option>
+            <option value="fastfood">Fast Food</option>
+            <option value="drinks">Drinks</option>
+        </select>
+    </div>
+
+    <!-- PRODUCTS -->
+    <section class="products" id="product-list">
+        <!-- Products will load from JavaScript -->
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        © 2026 Foodie Mart • Built by Sampath
+    </footer>
+
+    <!-- JS -->
+    <script src="script.js"></script>
+
 </body>
-
 </html>
