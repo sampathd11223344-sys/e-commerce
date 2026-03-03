@@ -1,40 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+    <title>Login - Foodie Mart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="form-container">
     <h2>Login</h2>
-    <input type="email" id="email" placeholder="Email"><br>
-    <input type="password" id="password" placeholder="Password"><br>
-    <button onclick="login()">Login</button>
-    <p>Don't have account? <a href="signup.html">Signup</a></p>
+    <button onclick="googleLogin()">Sign in with Google</button>
 </div>
 
-<script>
-function login(){
-    let email = document.getElementById("email").value;
-    let password = document.getElementById("password").value;
+<script type="module">
 
-    let users = JSON.parse(localStorage.getItem("users")) || [];
+// 🔥 Import Firebase (Auth version)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup }
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-    let validUser = users.find(user => 
-        user.email === email && user.password === password
-    );
+// ✅ YOUR FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "AIzaSyCIkDJkmm5FvMw1M_F1FviMwcG_httuwcA",
+  authDomain: "foodie-mart-3e2a0.firebaseapp.com",
+  projectId: "foodie-mart-3e2a0",
+  storageBucket: "foodie-mart-3e2a0.firebasestorage.app",
+  messagingSenderId: "591650958110",
+  appId: "1:591650958110:web:c453955af7c3bb0c77770f",
+  measurementId: "G-P9T8K47HKK"
+};
 
-    if(validUser){
-        localStorage.setItem("loggedInUser", JSON.stringify(validUser));
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+// Google Login Function
+window.googleLogin = function() {
+    signInWithPopup(auth, provider)
+    .then((result) => {
+        const user = result.user;
+
+        // Save user locally
+        localStorage.setItem("loggedInUser", JSON.stringify({
+            name: user.displayName,
+            email: user.email,
+            photo: user.photoURL
+        }));
+
         alert("Login successful!");
         window.location = "index.html";
-    } else {
-        alert("Invalid email or password");
-    }
-}
+    })
+    .catch((error) => {
+        alert(error.message);
+    });
+};
+
 </script>
 
 </body>
-
 </html>
