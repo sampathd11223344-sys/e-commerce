@@ -1,27 +1,33 @@
-// ================= PRODUCTS =================
-
+// PRODUCTS
 let products = JSON.parse(localStorage.getItem("products")) || [
-    {id:1, name:"Burger", price:120},
-    {id:2, name:"Pizza", price:250},
-    {id:3, name:"Sandwich", price:90},
-    {id:4, name:"Juice", price:70}
+    {id:1, name:"Burger", price:120, category:"fastfood"},
+    {id:2, name:"Pizza", price:250, category:"fastfood"},
+    {id:3, name:"Sandwich", price:90, category:"fastfood"},
+    {id:4, name:"Juice", price:70, category:"drinks"}
 ];
 
 localStorage.setItem("products", JSON.stringify(products));
 
-// ================= LOAD PRODUCTS =================
-
-function loadProducts() {
+// LOAD PRODUCTS
+function loadProducts(filtered = products) {
     let container = document.getElementById("product-list");
     if(!container) return;
 
     container.innerHTML = "";
 
-    products.forEach(p => {
+    filtered.forEach(p => {
         container.innerHTML += `
             <div class="card">
+                <div class="img-box">
+                    <img src="https://source.unsplash.com/400x300/?${p.name}" alt="">
+                </div>
                 <h3>${p.name}</h3>
                 <p>₹${p.price}</p>
+                <div class="qty">
+                    <button onclick="changeQty(-1, ${p.id})">-</button>
+                    <span id="qty-${p.id}">1</span>
+                    <button onclick="changeQty(1, ${p.id})">+</button>
+                </div>
                 <button onclick="addToCart(${p.id})">Add to Cart</button>
             </div>
         `;
@@ -30,8 +36,30 @@ function loadProducts() {
     updateCartCount();
 }
 
-// ================= CART =================
+// SEARCH + FILTER
+function filterProducts() {
+    let search = document.getElementById("searchInput").value.toLowerCase();
+    let category = document.getElementById("categoryFilter").value;
 
+    let filtered = products.filter(p => {
+        let matchSearch = p.name.toLowerCase().includes(search);
+        let matchCategory = category === "all" || p.category === category;
+        return matchSearch && matchCategory;
+    });
+
+    loadProducts(filtered);
+}
+
+// QUANTITY
+function changeQty(change, id) {
+    let qtyElement = document.getElementById(`qty-${id}`);
+    let current = parseInt(qtyElement.innerText);
+    current += change;
+    if(current < 1) current = 1;
+    qtyElement.innerText = current;
+}
+
+// CART
 function addToCart(id) {
     let user = JSON.parse(localStorage.getItem("loggedInUser"));
     if(!user){
@@ -40,8 +68,13 @@ function addToCart(id) {
         return;
     }
 
+    let qty = parseInt(document.getElementById(`qty-${id}`).innerText);
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    cart.push(id);
+
+    for(let i=0; i<qty; i++){
+        cart.push(id);
+    }
+
     localStorage.setItem("cart", JSON.stringify(cart));
     updateCartCount();
     alert("Added to cart!");
@@ -55,81 +88,6 @@ function updateCartCount() {
     }
 }
 
-// ================= CART PAGE =================
-
-function loadCart() {
-    let container = document.getElementById("cart-items");
-    if(!container) return;
-
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let total = 0;
-    container.innerHTML = "";
-
-    cart.forEach(id => {
-        let p = products.find(x => x.id == id);
-        if(p){
-            total += Number(p.price);
-            container.innerHTML += `
-                <div class="card">
-                    <h3>${p.name}</h3>
-                    <p>₹${p.price}</p>
-                </div>
-            `;
-        }
-    });
-
-    let totalBox = document.getElementById("total");
-    if(totalBox){
-        totalBox.innerText = "Total: ₹" + total;
-    }
-}
-
-// ================= LOGIN CHECK =================
-
-function checkLogin() {
-    let user = JSON.parse(localStorage.getItem("loggedInUser"));
-    let nav = document.getElementById("user-section");
-
-    if(nav && user){
-        nav.innerHTML = `
-            Welcome, ${user.name}
-            <button onclick="logout()">Logout</button>
-        `;
-    }
-}
-
-function logout(){
-    localStorage.removeItem("loggedInUser");
-    alert("Logged out successfully!");
-    window.location = "index.html";
-}
-
-// ================= ADMIN =================
-
-function addProduct(){
-    let name = document.getElementById("name").value;
-    let price = document.getElementById("price").value;
-
-    if(name === "" || price === ""){
-        alert("Fill all fields");
-        return;
-    }
-
-    let products = JSON.parse(localStorage.getItem("products")) || [];
-    products.push({
-        id: Date.now(),
-        name: name,
-        price: Number(price)
-    });
-
-    localStorage.setItem("products", JSON.stringify(products));
-    alert("Product Added!");
-    location.reload();
-}
-
-// ================= AUTO LOAD =================
-
+// AUTO LOAD
 loadProducts();
-loadCart();
-checkLogin();
 updateCartCount();
