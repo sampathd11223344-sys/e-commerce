@@ -1,32 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin</title>
-    <link rel="stylesheet" href="style.css">
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<center style="margin-top:50px;color:white;">
-<h2>Admin Panel</h2>
+<h2>Add Product</h2>
 
-<input id="name" placeholder="Product Name"><br><br>
-<input id="price" placeholder="Price"><br><br>
+<input id="name" placeholder="Product name">
+<input id="price" type="number" placeholder="Price">
+<input id="image" type="file">
 <button onclick="addProduct()">Add Product</button>
-</center>
 
-<script>
-function addProduct(){
-    let name = document.getElementById("name").value;
-    let price = document.getElementById("price").value;
+<script type="module">
 
-    let products = JSON.parse(localStorage.getItem("products"));
-    products.push({id:Date.now(), name, price});
-    localStorage.setItem("products", JSON.stringify(products));
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc }
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    alert("Product Added!");
+import { getStorage, ref, uploadBytes, getDownloadURL }
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCIkDJkmm5FvMw1M_F1FviMwcG_httuwcA",
+  authDomain: "foodie-mart-3e2a0.firebaseapp.com",
+  projectId: "foodie-mart-3e2a0",
+  storageBucket: "foodie-mart-3e2a0.appspot.com",
+  messagingSenderId: "591650958110",
+  appId: "1:591650958110:web:c453955af7c3bb0c77770f"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+window.addProduct = async function(){
+
+let name=document.getElementById("name").value;
+let price=document.getElementById("price").value;
+let file=document.getElementById("image").files[0];
+
+const imageRef = ref(storage,"foods/"+file.name);
+await uploadBytes(imageRef,file);
+
+const imageURL = await getDownloadURL(imageRef);
+
+await addDoc(collection(db,"products"),{
+name:name,
+price:Number(price),
+image:imageURL
+});
+
+alert("Product added");
+
 }
+
 </script>
 
 </body>
-
 </html>
