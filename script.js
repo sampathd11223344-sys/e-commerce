@@ -51,7 +51,7 @@ container.innerHTML+=`
 
 <p>₹${p.price}</p>
 
-<button onclick="addToCart('${doc.id}')">
+<button class="addCartBtn" data-id="${doc.id}">
 Add to Cart
 </button>
 
@@ -61,10 +61,21 @@ Add to Cart
 
 });
 
+// Attach button events
+document.querySelectorAll(".addCartBtn").forEach(btn=>{
+btn.addEventListener("click",function(){
+
+let id=this.getAttribute("data-id");
+
+addToCart(id);
+
+});
 });
 
-// ADD TO CART
-window.addToCart=function(id){
+});
+
+// Add to cart function
+function addToCart(id){
 
 let cart=JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -82,7 +93,7 @@ alert("Product added to cart");
 
 }
 
-// CART COUNT
+// Update cart number
 function updateCartCount(){
 
 let cart=JSON.parse(localStorage.getItem("cart")) || [];
