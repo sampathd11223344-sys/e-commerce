@@ -1,36 +1,23 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html>
 <head>
 <title>Admin Panel</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
-</head>
+</head><body><h1>Add Food Product</h1><input id="name" placeholder="Food name"><input id="price" type="number" placeholder="Price"><input id="image" placeholder="Image URL"><button onclick="addProduct()">Add Product</button>
 
-<body>
-
-<h2>Add Food Product</h2>
-  <h2>Manage Products</h2>
-<div id="products"></div>
-
-<input id="name" placeholder="Food name">
-<input id="price" type="number" placeholder="Price">
-<input id="image" type="file">
-
-<button onclick="addProduct()">Add Product</button>
-
-<script type="module">
+<h2>Manage Products</h2><div id="products"></div><script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 
-import {
+import { 
 getFirestore,
 collection,
-getDocs,
 addDoc,
+getDocs,
 deleteDoc,
 updateDoc,
 doc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
 
 const firebaseConfig = {
 apiKey: "AIzaSyCIkDJkmm5FvMw1M_F1FviMwcG_httuwcA",
@@ -41,10 +28,42 @@ messagingSenderId: "591650958110",
 appId: "1:591650958110:web:c453955af7c3bb0c77770f"
 };
 
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+
 const productList = document.getElementById("products");
+
+
+window.addProduct = async function(){
+
+const name = document.getElementById("name").value;
+const price = Number(document.getElementById("price").value);
+const image = document.getElementById("image").value;
+
+if(!name || !price || !image){
+alert("Fill all fields");
+return;
+}
+
+await addDoc(collection(db,"products"),{
+name:name,
+price:price,
+image:image
+});
+
+alert("Product Added");
+
+document.getElementById("name").value="";
+document.getElementById("price").value="";
+document.getElementById("image").value="";
+
+loadProducts();
+
+}
+
+
 
 async function loadProducts(){
 
@@ -54,7 +73,7 @@ const snapshot = await getDocs(collection(db,"products"));
 
 snapshot.forEach((docSnap)=>{
 
-let data = docSnap.data();
+const data = docSnap.data();
 
 productList.innerHTML += `
 
@@ -78,43 +97,40 @@ productList.innerHTML += `
 
 }
 
+
+
 window.deleteProduct = async function(id){
 
 await deleteDoc(doc(db,"products",id));
 
-alert("Product deleted");
+alert("Product Deleted");
 
 loadProducts();
 
 }
+
+
 
 window.editProduct = async function(id,name,price){
 
-let newName = prompt("Edit product name",name);
-
+let newName = prompt("Edit name",name);
 let newPrice = prompt("Edit price",price);
 
-if(newName && newPrice){
+if(!newName || !newPrice) return;
 
 await updateDoc(doc(db,"products",id),{
-
 name:newName,
 price:Number(newPrice)
-
 });
 
-alert("Product updated");
+alert("Product Updated");
 
 loadProducts();
 
 }
 
-}
 
 loadProducts();
 
-</script>
-</body>
+</script></body>
 </html>
-
-
