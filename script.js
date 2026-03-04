@@ -1,5 +1,4 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-
 import { getFirestore, collection, onSnapshot }
 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -17,15 +16,28 @@ const db = getFirestore(app);
 
 const productsRef = collection(db,"products");
 
+let products = [];
+
+// Load products from Firebase
 onSnapshot(productsRef,(snapshot)=>{
 
 let container=document.getElementById("product-list");
 
+if(!container) return;
+
 container.innerHTML="";
+products=[];
 
 snapshot.forEach(doc=>{
 
 let p=doc.data();
+
+products.push({
+id:doc.id,
+name:p.name,
+price:p.price,
+image:p.image
+});
 
 container.innerHTML+=`
 
@@ -37,7 +49,9 @@ container.innerHTML+=`
 
 <p>₹${p.price}</p>
 
-<button>Add to Cart</button>
+<button onclick="addToCart('${doc.id}')">
+Add to Cart
+</button>
 
 </div>
 
@@ -46,3 +60,33 @@ container.innerHTML+=`
 });
 
 });
+
+// Add to cart
+window.addToCart=function(id){
+
+let cart=JSON.parse(localStorage.getItem("cart")) || [];
+
+let product=products.find(p=>p.id===id);
+
+cart.push(product);
+
+localStorage.setItem("cart",JSON.stringify(cart));
+
+updateCartCount();
+
+alert("Added to cart");
+
+}
+
+// Update cart icon number
+function updateCartCount(){
+
+let cart=JSON.parse(localStorage.getItem("cart")) || [];
+
+let count=document.getElementById("cart-count");
+
+if(count) count.innerText=cart.length;
+
+}
+
+updateCartCount();
