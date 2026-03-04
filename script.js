@@ -4,12 +4,12 @@ import { getFirestore, collection, onSnapshot }
 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCIkDJkmm5FvMw1M_F1FviMwcG_httuwcA",
-  authDomain: "foodie-mart-3e2a0.firebaseapp.com",
-  projectId: "foodie-mart-3e2a0",
-  storageBucket: "foodie-mart-3e2a0.appspot.com",
-  messagingSenderId: "591650958110",
-  appId: "1:591650958110:web:c453955af7c3bb0c77770f"
+apiKey: "AIzaSyCIkDJkmm5FvMw1M_F1FviMwcG_httuwcA",
+authDomain: "foodie-mart-3e2a0.firebaseapp.com",
+projectId: "foodie-mart-3e2a0",
+storageBucket: "foodie-mart-3e2a0.firebasestorage.app",
+messagingSenderId: "591650958110",
+appId: "1:591650958110:web:c453955af7c3bb0c77770f"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -37,7 +37,7 @@ container.innerHTML+=`
 
 <p>₹${p.price}</p>
 
-<button onclick="addToCart('${doc.id}')">Add to Cart</button>
+<button>Add to Cart</button>
 
 </div>
 
