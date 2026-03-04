@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Orders</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>Admin Order Dashboard</h1>
+
+<div id="orders"></div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, updateDoc, doc }
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyCIkDJkmm5FvMw1M_F1FviMwcG_httuwcA",
+authDomain: "foodie-mart-3e2a0.firebaseapp.com",
+projectId: "foodie-mart-3e2a0",
+storageBucket: "foodie-mart-3e2a0.firebasestorage.app",
+messagingSenderId: "591650958110",
+appId: "1:591650958110:web:c453955af7c3bb0c77770f"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function loadOrders(){
+
+const querySnapshot = await getDocs(collection(db,"orders"));
+
+let container = document.getElementById("orders");
+
+container.innerHTML = "";
+
+querySnapshot.forEach((docSnap)=>{
+
+let data = docSnap.data();
+
+container.innerHTML += `
+
+<div class="card">
+
+<h3>Order ID: ${docSnap.id}</h3>
+
+<p>Total: ₹${data.total}</p>
+
+<p>Status: ${data.status}</p>
+
+<button onclick="updateStatus('${docSnap.id}','Preparing')">Preparing</button>
+
+<button onclick="updateStatus('${docSnap.id}','Delivered')">Delivered</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+window.updateStatus = async function(id,status){
+
+const orderRef = doc(db,"orders",id);
+
+await updateDoc(orderRef,{
+status: status
+});
+
+alert("Status Updated");
+
+loadOrders();
+
+}
+
+loadOrders();
+
+</script>
+
+</body>
+</html>
