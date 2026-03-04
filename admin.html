@@ -20,8 +20,15 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 
-import { getFirestore, collection, addDoc }
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import {
+getFirestore,
+collection,
+getDocs,
+addDoc,
+deleteDoc,
+updateDoc,
+doc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyCIkDJkmm5FvMw1M_F1FviMwcG_httuwcA",
@@ -35,39 +42,76 @@ appId: "1:591650958110:web:c453955af7c3bb0c77770f"
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-window.addProduct = async function(){
+const productList = document.getElementById("products");
 
-let name=document.getElementById("name").value;
-let price=document.getElementById("price").value;
-let file=document.getElementById("image").files[0];
+async function loadProducts(){
 
-let formData=new FormData();
-formData.append("image",file);
+productList.innerHTML="";
 
-let response=await fetch(
-"https://api.imgbb.com/1/upload?key=a0d56af5b2779899757ecc411a4c8b74",
-{
-method:"POST",
-body:formData
+const snapshot = await getDocs(collection(db,"products"));
+
+snapshot.forEach((docSnap)=>{
+
+let data = docSnap.data();
+
+productList.innerHTML += `
+
+<div class="card">
+
+<img src="${data.image}" width="120">
+
+<h3>${data.name}</h3>
+
+<p>₹${data.price}</p>
+
+<button onclick="editProduct('${docSnap.id}','${data.name}',${data.price})">Edit</button>
+
+<button onclick="deleteProduct('${docSnap.id}')">Delete</button>
+
+</div>
+
+`;
+
 });
 
-let data=await response.json();
-
-let imageURL=data.data.url;
-
-await addDoc(collection(db,"products"),{
-name:name,
-price:Number(price),
-image:imageURL
-});
-
-alert("Product Added Successfully");
-
-document.getElementById("name").value="";
-document.getElementById("price").value="";
 }
 
-</script>
+window.deleteProduct = async function(id){
 
+await deleteDoc(doc(db,"products",id));
+
+alert("Product deleted");
+
+loadProducts();
+
+}
+
+window.editProduct = async function(id,name,price){
+
+let newName = prompt("Edit product name",name);
+
+let newPrice = prompt("Edit price",price);
+
+if(newName && newPrice){
+
+await updateDoc(doc(db,"products",id),{
+
+name:newName,
+price:Number(newPrice)
+
+});
+
+alert("Product updated");
+
+loadProducts();
+
+}
+
+}
+
+loadProducts();
+
+</script>
 </body>
 </html>
+
