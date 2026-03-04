@@ -1,33 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cart</title>
-    <link rel="stylesheet" href="style.css">
+<title>Your Cart</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h2 style="text-align:center;color:white;">Your Cart</h2>
-<div id="cart-items" class="products"></div>
-<center>
-    <h3 id="total"></h3>
-    <a href="checkout.html"><button>Proceed to Checkout</button></a>
-</center>
+<h1>Your Cart</h1>
+
+<div id="cart-items"></div>
+
+<h2 id="total"></h2>
+
+<button onclick="placeOrder()">Place Order</button>
 
 <script>
-let products = JSON.parse(localStorage.getItem("products"));
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let container = document.getElementById("cart-items");
-let total = 0;
 
-cart.forEach(id=>{
-    let p = products.find(x=>x.id==id);
-    total += p.price;
-    container.innerHTML += `<div class="card"><h3>${p.name}</h3><p>₹${p.price}</p></div>`;
+let cart=JSON.parse(localStorage.getItem("cart")) || [];
+
+let container=document.getElementById("cart-items");
+
+let total=0;
+
+cart.forEach(item=>{
+
+container.innerHTML+=`
+
+<div class="card">
+
+<img src="${item.image}" width="100">
+
+<h3>${item.name}</h3>
+
+<p>₹${item.price}</p>
+
+</div>
+
+`;
+
+total+=item.price;
+
 });
 
-document.getElementById("total").innerText = "Total: ₹"+total;
+document.getElementById("total").innerText="Total: ₹"+total;
+
+function placeOrder(){
+
+alert("Order placed!");
+
+localStorage.removeItem("cart");
+
+location.reload();
+
+}
+
 </script>
 
 </body>
-
 </html>
