@@ -1,93 +1,48 @@
-// PRODUCTS
-let products = JSON.parse(localStorage.getItem("products")) || [
-    {id:1, name:"Burger", price:120, category:"fastfood"},
-    {id:2, name:"Pizza", price:250, category:"fastfood"},
-    {id:3, name:"Sandwich", price:90, category:"fastfood"},
-    {id:4, name:"Juice", price:70, category:"drinks"}
-];
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 
-localStorage.setItem("products", JSON.stringify(products));
+import { getFirestore, collection, onSnapshot }
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// LOAD PRODUCTS
-function loadProducts(filtered = products) {
-    let container = document.getElementById("product-list");
-    if(!container) return;
+const firebaseConfig = {
+  apiKey: "AIzaSyCIkDJkmm5FvMw1M_F1FviMwcG_httuwcA",
+  authDomain: "foodie-mart-3e2a0.firebaseapp.com",
+  projectId: "foodie-mart-3e2a0",
+  storageBucket: "foodie-mart-3e2a0.appspot.com",
+  messagingSenderId: "591650958110",
+  appId: "1:591650958110:web:c453955af7c3bb0c77770f"
+};
 
-    container.innerHTML = "";
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-    filtered.forEach(p => {
-        container.innerHTML += `
-            <div class="card">
-                <div class="img-box">
-                    <img src="https://source.unsplash.com/400x300/?${p.name}" alt="">
-                </div>
-                <h3>${p.name}</h3>
-                <p>₹${p.price}</p>
-                <div class="qty">
-                    <button onclick="changeQty(-1, ${p.id})">-</button>
-                    <span id="qty-${p.id}">1</span>
-                    <button onclick="changeQty(1, ${p.id})">+</button>
-                </div>
-                <button onclick="addToCart(${p.id})">Add to Cart</button>
-            </div>
-        `;
-    });
+const productsRef = collection(db,"products");
 
-    updateCartCount();
-}
+onSnapshot(productsRef,(snapshot)=>{
 
-// SEARCH + FILTER
-function filterProducts() {
-    let search = document.getElementById("searchInput").value.toLowerCase();
-    let category = document.getElementById("categoryFilter").value;
+let container=document.getElementById("product-list");
 
-    let filtered = products.filter(p => {
-        let matchSearch = p.name.toLowerCase().includes(search);
-        let matchCategory = category === "all" || p.category === category;
-        return matchSearch && matchCategory;
-    });
+container.innerHTML="";
 
-    loadProducts(filtered);
-}
+snapshot.forEach(doc=>{
 
-// QUANTITY
-function changeQty(change, id) {
-    let qtyElement = document.getElementById(`qty-${id}`);
-    let current = parseInt(qtyElement.innerText);
-    current += change;
-    if(current < 1) current = 1;
-    qtyElement.innerText = current;
-}
+let p=doc.data();
 
-// CART
-function addToCart(id) {
-    let user = JSON.parse(localStorage.getItem("loggedInUser"));
-    if(!user){
-        alert("Please login first!");
-        window.location = "login.html";
-        return;
-    }
+container.innerHTML+=`
 
-    let qty = parseInt(document.getElementById(`qty-${id}`).innerText);
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+<div class="card">
 
-    for(let i=0; i<qty; i++){
-        cart.push(id);
-    }
+<img src="${p.image}" width="100%">
 
-    localStorage.setItem("cart", JSON.stringify(cart));
-    updateCartCount();
-    alert("Added to cart!");
-}
+<h3>${p.name}</h3>
 
-function updateCartCount() {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let count = document.getElementById("cart-count");
-    if(count){
-        count.innerText = cart.length;
-    }
-}
+<p>₹${p.price}</p>
 
-// AUTO LOAD
-loadProducts();
-updateCartCount();
+<button onclick="addToCart('${doc.id}')">Add to Cart</button>
+
+</div>
+
+`;
+
+});
+
+});
