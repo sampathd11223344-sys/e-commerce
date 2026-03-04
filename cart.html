@@ -15,17 +15,33 @@
 
 <button onclick="placeOrder()">Place Order</button>
 
-<script>
+<script type="module">
 
-let cart=JSON.parse(localStorage.getItem("cart")) || [];
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc }
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-let container=document.getElementById("cart-items");
+const firebaseConfig = {
+apiKey: "AIzaSyCIkDJkmm5FvMw1M_F1FviMwcG_httuwcA",
+authDomain: "foodie-mart-3e2a0.firebaseapp.com",
+projectId: "foodie-mart-3e2a0",
+storageBucket: "foodie-mart-3e2a0.firebasestorage.app",
+messagingSenderId: "591650958110",
+appId: "1:591650958110:web:c453955af7c3bb0c77770f"
+};
 
-let total=0;
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+let container = document.getElementById("cart-items");
+
+let total = 0;
 
 cart.forEach(item=>{
 
-container.innerHTML+=`
+container.innerHTML += `
 
 <div class="card">
 
@@ -39,15 +55,29 @@ container.innerHTML+=`
 
 `;
 
-total+=item.price;
+total += item.price;
 
 });
 
-document.getElementById("total").innerText="Total: ₹"+total;
+document.getElementById("total").innerText = "Total: ₹" + total;
 
-function placeOrder(){
+window.placeOrder = async function(){
 
-alert("Order placed!");
+if(cart.length === 0){
+alert("Cart is empty");
+return;
+}
+
+await addDoc(collection(db,"orders"),{
+
+items: cart,
+total: total,
+status: "pending",
+time: new Date().toISOString()
+
+});
+
+alert("Order placed successfully!");
 
 localStorage.removeItem("cart");
 
