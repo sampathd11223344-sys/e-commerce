@@ -14,8 +14,14 @@
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs, updateDoc, doc }
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+import { 
+getFirestore, 
+collection, 
+onSnapshot, 
+updateDoc, 
+doc 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyCIkDJkmm5FvMw1M_F1FviMwcG_httuwcA",
@@ -29,15 +35,13 @@ appId: "1:591650958110:web:c453955af7c3bb0c77770f"
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-async function loadOrders(){
+const container = document.getElementById("orders");
 
-const querySnapshot = await getDocs(collection(db,"orders"));
+onSnapshot(collection(db,"orders"),(snapshot)=>{
 
-let container = document.getElementById("orders");
+container.innerHTML="";
 
-container.innerHTML = "";
-
-querySnapshot.forEach((docSnap)=>{
+snapshot.forEach((docSnap)=>{
 
 let data = docSnap.data();
 
@@ -61,7 +65,7 @@ container.innerHTML += `
 
 });
 
-}
+});
 
 window.updateStatus = async function(id,status){
 
@@ -71,15 +75,8 @@ await updateDoc(orderRef,{
 status: status
 });
 
-alert("Status Updated");
-
-loadOrders();
-
 }
 
-loadOrders();
-
 </script>
-
 </body>
 </html>
