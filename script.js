@@ -16,9 +16,9 @@ const db = getFirestore(app);
 
 const productsRef = collection(db,"products");
 
-let products = [];
+let products=[];
 
-// Load products from Firebase
+// Load products
 onSnapshot(productsRef,(snapshot)=>{
 
 let container=document.getElementById("product-list");
@@ -32,12 +32,14 @@ snapshot.forEach(doc=>{
 
 let p=doc.data();
 
-products.push({
+let product={
 id:doc.id,
 name:p.name,
 price:p.price,
 image:p.image
-});
+};
+
+products.push(product);
 
 container.innerHTML+=`
 
@@ -61,31 +63,35 @@ Add to Cart
 
 });
 
-// Add to cart
+// ADD TO CART
 window.addToCart=function(id){
 
 let cart=JSON.parse(localStorage.getItem("cart")) || [];
 
 let product=products.find(p=>p.id===id);
 
+if(product){
 cart.push(product);
+}
 
 localStorage.setItem("cart",JSON.stringify(cart));
 
 updateCartCount();
 
-alert("Added to cart");
+alert("Product added to cart");
 
 }
 
-// Update cart icon number
+// CART COUNT
 function updateCartCount(){
 
 let cart=JSON.parse(localStorage.getItem("cart")) || [];
 
 let count=document.getElementById("cart-count");
 
-if(count) count.innerText=cart.length;
+if(count){
+count.innerText=cart.length;
+}
 
 }
 
