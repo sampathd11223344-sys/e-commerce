@@ -1,6 +1,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, onSnapshot }
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+import {
+getFirestore,
+collection,
+onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyCIkDJkmm5FvMw1M_F1FviMwcG_httuwcA",
@@ -14,32 +18,41 @@ appId: "1:591650958110:web:c453955af7c3bb0c77770f"
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const productsRef = collection(db,"products");
-
 let products=[];
 
-// Load products
+const productsRef = collection(db,"products");
+
 onSnapshot(productsRef,(snapshot)=>{
+
+products=[];
+
+snapshot.forEach(doc=>{
+
+let p = doc.data();
+
+products.push({
+id:doc.id,
+name:p.name,
+price:p.price,
+image:p.image,
+category:p.category
+});
+
+});
+
+displayProducts(products);
+
+});
+
+function displayProducts(list){
 
 let container=document.getElementById("product-list");
 
 if(!container) return;
 
 container.innerHTML="";
-products=[];
 
-snapshot.forEach(doc=>{
-
-let p=doc.data();
-
-let product={
-id:doc.id,
-name:p.name,
-price:p.price,
-image:p.image
-};
-
-products.push(product);
+list.forEach(p=>{
 
 container.innerHTML+=`
 
@@ -51,7 +64,7 @@ container.innerHTML+=`
 
 <p>₹${p.price}</p>
 
-<button class="addCartBtn" data-id="${doc.id}">
+<button onclick="addToCart('${p.id}')">
 Add to Cart
 </button>
 
@@ -61,49 +74,52 @@ Add to Cart
 
 });
 
-// Attach button events
-document.querySelectorAll(".addCartBtn").forEach(btn=>{
-btn.addEventListener("click",function(){
+}
 
-let id=this.getAttribute("data-id");
-
-addToCart(id);
-
-});
-});
-
-});
-
-// Add to cart function
-function addToCart(id){
+window.addToCart=function(id){
 
 let cart=JSON.parse(localStorage.getItem("cart")) || [];
 
 let product=products.find(p=>p.id===id);
 
-if(product){
 cart.push(product);
-}
 
 localStorage.setItem("cart",JSON.stringify(cart));
 
 updateCartCount();
 
-alert("Product added to cart");
+alert("Added to cart");
 
 }
 
-// Update cart number
 function updateCartCount(){
 
 let cart=JSON.parse(localStorage.getItem("cart")) || [];
 
 let count=document.getElementById("cart-count");
 
-if(count){
-count.innerText=cart.length;
-}
+if(count) count.innerText=cart.length;
 
 }
 
 updateCartCount();
+
+window.filterProducts=function(){
+
+const search=document.getElementById("searchInput").value.toLowerCase();
+
+const category=document.getElementById("categoryFilter").value;
+
+let filtered=products.filter(p=>{
+
+let matchSearch=p.name.toLowerCase().includes(search);
+
+let matchCategory=category==="all" || p.category===category;
+
+return matchSearch && matchCategory;
+
+});
+
+displayProducts(filtered);
+
+}
