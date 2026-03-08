@@ -6,7 +6,6 @@ collection,
 onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-
 const firebaseConfig = {
 apiKey:"AIzaSyCIkDJkmm5FvMw1M_F1FviMwcG_httuwcA",
 authDomain:"foodie-mart-3e2a0.firebaseapp.com",
@@ -16,15 +15,12 @@ messagingSenderId:"591650958110",
 appId:"1:591650958110:web:c453955af7c3bb0c77770f"
 };
 
-
 const app=initializeApp(firebaseConfig);
 const db=getFirestore(app);
-
 
 let products=[];
 
 const productsRef=collection(db,"products");
-
 
 onSnapshot(productsRef,(snapshot)=>{
 
@@ -34,17 +30,21 @@ snapshot.forEach(doc=>{
 
 let p=doc.data();
 
+let rating=(Math.random()*2+3).toFixed(1);
+
 products.push({
 id:doc.id,
 name:p.name,
 price:p.price,
 image:p.image,
-category:(p.category||"").toLowerCase()
+category:(p.category||"").toLowerCase(),
+rating:rating
 });
 
 });
 
 displayProducts(products);
+showTopRated();
 
 });
 
@@ -52,6 +52,8 @@ displayProducts(products);
 function displayProducts(list){
 
 let container=document.getElementById("product-list");
+
+if(!container) return;
 
 container.innerHTML="";
 
@@ -67,11 +69,46 @@ container.innerHTML+=`
 
 <p>₹${p.price}</p>
 
-<div class="rating">⭐ ⭐ ⭐ ⭐ ☆</div>
+<div class="rating">⭐ ${p.rating}</div>
 
 <button onclick="event.stopPropagation(); addToCart('${p.id}')">
 Add to Cart
 </button>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+function showTopRated(){
+
+let container=document.getElementById("topFoods");
+
+if(!container) return;
+
+let top=[...products]
+.sort((a,b)=>b.rating-a.rating)
+.slice(0,3);
+
+container.innerHTML="";
+
+top.forEach(p=>{
+
+container.innerHTML+=`
+
+<div class="card" onclick="openFood('${p.id}')">
+
+<img src="${p.image}">
+
+<h3>${p.name}</h3>
+
+<p>₹${p.price}</p>
+
+<div class="rating">⭐ ${p.rating}</div>
 
 </div>
 
@@ -132,7 +169,6 @@ let count=document.getElementById("cart-count");
 if(count) count.innerText=cart.length;
 
 }
-
 
 updateCartCount();
 
