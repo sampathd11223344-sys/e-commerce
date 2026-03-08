@@ -1,3 +1,13 @@
+tegory===category;
+
+return matchSearch&&matchCategory;
+
+});
+
+displayProducts(filtered);
+
+}
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 
 import {
@@ -5,6 +15,7 @@ getFirestore,
 collection,
 onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
 
 const firebaseConfig = {
 apiKey:"AIzaSyCIkDJkmm5FvMw1M_F1FviMwcG_httuwcA",
@@ -15,12 +26,15 @@ messagingSenderId:"591650958110",
 appId:"1:591650958110:web:c453955af7c3bb0c77770f"
 };
 
-const app=initializeApp(firebaseConfig);
-const db=getFirestore(app);
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 
 let products=[];
 
-const productsRef=collection(db,"products");
+const productsRef = collection(db,"products");
+
 
 onSnapshot(productsRef,(snapshot)=>{
 
@@ -28,7 +42,7 @@ products=[];
 
 snapshot.forEach(doc=>{
 
-let p=doc.data();
+let p = doc.data();
 
 let rating=(Math.random()*2+3).toFixed(1);
 
@@ -84,6 +98,7 @@ Add to Cart
 }
 
 
+
 function showTopRated(){
 
 let container=document.getElementById("topFoods");
@@ -119,6 +134,7 @@ container.innerHTML+=`
 }
 
 
+
 window.openFood=function(id){
 
 let product=products.find(p=>p.id===id);
@@ -138,9 +154,11 @@ addToCart(id);
 }
 
 
+
 window.closeModal=function(){
 document.getElementById("foodModal").style.display="none";
 }
+
 
 
 window.addToCart=function(id){
@@ -160,17 +178,28 @@ alert("Added to cart");
 }
 
 
+
 function updateCartCount(){
 
 let cart=JSON.parse(localStorage.getItem("cart"))||[];
 
 let count=document.getElementById("cart-count");
 
-if(count) count.innerText=cart.length;
+if(count){
+count.innerText=cart.length;
+}
+
+let mobile=document.getElementById("mobile-cart-count");
+
+if(mobile){
+mobile.innerText=cart.length;
+}
 
 }
 
+
 updateCartCount();
+
 
 
 window.filterProducts=function(){
