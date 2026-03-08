@@ -1,26 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
+
 <title>Foodie Mart</title>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="style.css">
+
 </head>
+
 
 <body>
 
+
 <header>
+
 <h1>Foodie Mart</h1>
 
 <nav>
+
 <a href="index.html">Home</a>
+
 <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+
 <a href="login.html">Login</a>
-<a href="admin.html">Admin</a>
+
 </nav>
 
 </header>
+
 
 
 <section class="hero">
@@ -32,14 +44,10 @@
 </section>
 
 
+
 <div class="controls">
 
-<input 
-type="text"
-id="searchInput"
-placeholder="Search food..."
-onkeyup="filterProducts()"
->
+<input type="text" id="searchInput" placeholder="Search food..." onkeyup="filterProducts()">
 
 <select id="categoryFilter" onchange="filterProducts()">
 
@@ -52,14 +60,13 @@ onkeyup="filterProducts()"
 <option value="desserts">Desserts</option>
 
 </select>
+
 </div>
 
 
-<section class="products" id="product-list">
 
-<!-- Products load from Firebase -->
+<section class="products" id="product-list"></section>
 
-</section>
 
 
 <footer>
@@ -69,8 +76,31 @@ onkeyup="filterProducts()"
 </footer>
 
 
+
+<div id="foodModal" class="modal">
+
+<div class="modal-content">
+
+<span class="close" onclick="closeModal()">&times;</span>
+
+<img id="modalImage">
+
+<h2 id="modalName"></h2>
+
+<p id="modalPrice"></p>
+
+<div class="rating">⭐ ⭐ ⭐ ⭐ ☆</div>
+
+<button id="modalCartBtn">Add to Cart</button>
+
+</div>
+
+</div>
+
+
+
 <script type="module" src="script.js"></script>
 
 </body>
-</html>
 
+</html>
