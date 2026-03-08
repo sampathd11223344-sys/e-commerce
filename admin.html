@@ -2,7 +2,13 @@
 <head>
 <title>Admin Panel</title>
 <link rel="stylesheet" href="style.css">
-</head><body><h1>Add Food Product</h1><input id="name" placeholder="Food name"><input id="price" type="number" placeholder="Price"><input type="file" id="image" onchange="previewImage()"><br><br>
+</head><body><h1>Add Food Product</h1><input id="name" placeholder="Food name"><input id="price" type="number" placeholder="Price"><select id="category">
+<option value="fastfood">Fast Food</option>
+<option value="drinks">Drinks</option>
+<option value="desserts">Desserts</option>
+</select><br><br>
+
+<input type="file" id="image" onchange="previewImage()"><br><br>
 
 <img id="preview" width="150" style="display:none;border-radius:8px"><br><br>
 
@@ -37,7 +43,6 @@ const API_KEY = "a0d56af5b2779899757ecc411a4c8b74";
 
 const productList = document.getElementById("products");
 
-
 window.previewImage = function(){
 
 const file = document.getElementById("image").files[0];
@@ -50,11 +55,11 @@ preview.style.display = "block";
 
 }
 
-
 window.addProduct = async function(){
 
 const name = document.getElementById("name").value;
 const price = Number(document.getElementById("price").value);
+const category = document.getElementById("category").value;
 const file = document.getElementById("image").files[0];
 
 if(!name || !price || !file){
@@ -80,6 +85,7 @@ const imageURL = data.data.url;
 await addDoc(collection(db,"products"),{
 name:name,
 price:price,
+category:category,
 image:imageURL
 });
 
@@ -93,7 +99,6 @@ document.getElementById("preview").style.display="none";
 loadProducts();
 
 }
-
 
 async function loadProducts(){
 
@@ -115,6 +120,8 @@ productList.innerHTML += `
 
 <p>₹${data.price}</p>
 
+<p>${data.category}</p>
+
 <button onclick="deleteProduct('${docSnap.id}')">Delete</button>
 
 </div>
@@ -124,7 +131,6 @@ productList.innerHTML += `
 });
 
 }
-
 
 window.deleteProduct = async function(id){
 
