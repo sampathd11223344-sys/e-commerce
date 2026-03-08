@@ -3,6 +3,7 @@ font-family:Arial;
 margin:0;
 background:#121212;
 color:white;
+padding-bottom:70px;
 }
 
 header{
@@ -13,7 +14,7 @@ padding:15px 40px;
 background:#1e1e1e;
 }
 
-header a{
+.desktop-nav a{
 color:white;
 text-decoration:none;
 margin-left:20px;
@@ -36,12 +37,7 @@ gap:20px;
 padding:20px;
 }
 
-.controls input{
-padding:10px;
-border-radius:6px;
-border:none;
-}
-
+.controls input,
 .controls select{
 padding:10px;
 border-radius:6px;
@@ -130,4 +126,52 @@ margin-bottom:10px;
 font-size:25px;
 cursor:pointer;
 float:right;
+}
+
+
+/* MOBILE NAVIGATION */
+
+.mobile-nav{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:#1e1e1e;
+display:flex;
+justify-content:space-around;
+align-items:center;
+padding:10px 0;
+border-top:1px solid #333;
+}
+
+.mobile-nav a{
+color:white;
+text-decoration:none;
+display:flex;
+flex-direction:column;
+align-items:center;
+font-size:18px;
+}
+
+.mobile-nav span{
+font-size:12px;
+margin-top:3px;
+}
+
+
+/* CART BADGE */
+
+.badge{
+position:absolute;
+background:#ff3d00;
+color:white;
+font-size:12px;
+padding:2px 6px;
+border-radius:50%;
+top:-5px;
+right:-10px;
+}
+
+.cart-btn{
+position:relative;
 }
