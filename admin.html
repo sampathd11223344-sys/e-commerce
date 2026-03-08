@@ -2,7 +2,11 @@
 <head>
 <title>Admin Panel</title>
 <link rel="stylesheet" href="style.css">
-</head><body><h1>Add Food Product</h1><input id="name" placeholder="Food name"><input id="price" type="number" placeholder="Price"><input type="file" id="image"><button onclick="addProduct()">Add Product</button>
+</head><body><h1>Add Food Product</h1><input id="name" placeholder="Food name"><input id="price" type="number" placeholder="Price"><input type="file" id="image" onchange="previewImage()"><br><br>
+
+<img id="preview" width="150" style="display:none;border-radius:8px"><br><br>
+
+<button onclick="addProduct()">Add Product</button>
 
 <h2>Manage Products</h2><div id="products"></div><script type="module">
 
@@ -32,6 +36,19 @@ const db = getFirestore(app);
 const API_KEY = "a0d56af5b2779899757ecc411a4c8b74";
 
 const productList = document.getElementById("products");
+
+
+window.previewImage = function(){
+
+const file = document.getElementById("image").files[0];
+
+const preview = document.getElementById("preview");
+
+preview.src = URL.createObjectURL(file);
+
+preview.style.display = "block";
+
+}
 
 
 window.addProduct = async function(){
@@ -71,6 +88,7 @@ alert("Product Added");
 document.getElementById("name").value="";
 document.getElementById("price").value="";
 document.getElementById("image").value="";
+document.getElementById("preview").style.display="none";
 
 loadProducts();
 
@@ -117,7 +135,6 @@ alert("Product Deleted");
 loadProducts();
 
 }
-
 
 loadProducts();
 
