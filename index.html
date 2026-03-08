@@ -4,9 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-
 <title>Foodie Mart</title>
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="style.css">
@@ -19,12 +17,10 @@
 
 <h1>Foodie Mart</h1>
 
-<nav>
+<nav class="desktop-nav">
 
 <a href="index.html">Home</a>
-
 <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
-
 <a href="login.html">Login</a>
 
 </nav>
@@ -35,7 +31,6 @@
 <section class="hero">
 
 <h2>Fast. Fresh. <span>Delivered.</span></h2>
-
 <p>Your favourite meals just one click away.</p>
 
 </section>
@@ -48,11 +43,8 @@
 <select id="categoryFilter" onchange="filterProducts()">
 
 <option value="all">All</option>
-
 <option value="fastfood">Fast Food</option>
-
 <option value="drinks">Drinks</option>
-
 <option value="desserts">Desserts</option>
 
 </select>
@@ -98,8 +90,24 @@
 </div>
 
 
+<!-- MOBILE BOTTOM NAV -->
+
+<div class="mobile-nav">
+
+<a href="index.html">🏠<span>Home</span></a>
+
+<a href="cart.html" class="cart-btn">
+🛒
+<span class="badge" id="mobile-cart-count">0</span>
+<span>Cart</span>
+</a>
+
+<a href="login.html">👤<span>Login</span></a>
+
+</div>
+
+
 <script type="module" src="script.js"></script>
 
 </body>
-
 </html>
