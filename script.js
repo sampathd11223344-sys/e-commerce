@@ -6,6 +6,7 @@ collection,
 onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+
 const firebaseConfig = {
 apiKey: "AIzaSyCIkDJkmm5FvMw1M_F1FviMwcG_httuwcA",
 authDomain: "foodie-mart-3e2a0.firebaseapp.com",
@@ -15,12 +16,15 @@ messagingSenderId: "591650958110",
 appId: "1:591650958110:web:c453955af7c3bb0c77770f"
 };
 
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
 
 let products=[];
 
 const productsRef = collection(db,"products");
+
 
 onSnapshot(productsRef,(snapshot)=>{
 
@@ -59,11 +63,15 @@ container.innerHTML+=`
 
 <div class="card">
 
-<img src="${p.image}" width="100%">
+<img src="${p.image}">
 
 <h3>${p.name}</h3>
 
 <p>₹${p.price}</p>
+
+<div class="rating">
+⭐ ⭐ ⭐ ⭐ ☆
+</div>
 
 <button onclick="addToCart('${p.id}')">
 Add to Cart
@@ -84,7 +92,9 @@ let cart=JSON.parse(localStorage.getItem("cart")) || [];
 
 let product=products.find(p=>p.id===id);
 
+if(product){
 cart.push(product);
+}
 
 localStorage.setItem("cart",JSON.stringify(cart));
 
@@ -101,7 +111,9 @@ let cart=JSON.parse(localStorage.getItem("cart")) || [];
 
 let count=document.getElementById("cart-count");
 
-if(count) count.innerText=cart.length;
+if(count){
+count.innerText=cart.length;
+}
 
 }
 
