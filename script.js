@@ -35,7 +35,7 @@ id:doc.id,
 name:p.name,
 price:p.price,
 image:p.image,
-category:p.category
+category:(p.category || "").toLowerCase()
 });
 
 });
@@ -43,6 +43,7 @@ category:p.category
 displayProducts(products);
 
 });
+
 
 function displayProducts(list){
 
@@ -76,6 +77,7 @@ Add to Cart
 
 }
 
+
 window.addToCart=function(id){
 
 let cart=JSON.parse(localStorage.getItem("cart")) || [];
@@ -92,6 +94,7 @@ alert("Added to cart");
 
 }
 
+
 function updateCartCount(){
 
 let cart=JSON.parse(localStorage.getItem("cart")) || [];
@@ -104,11 +107,12 @@ if(count) count.innerText=cart.length;
 
 updateCartCount();
 
+
 window.filterProducts=function(){
 
 const search=document.getElementById("searchInput").value.toLowerCase();
 
-const category=document.getElementById("categoryFilter").value;
+const category=document.getElementById("categoryFilter").value.toLowerCase();
 
 let filtered=products.filter(p=>{
 
