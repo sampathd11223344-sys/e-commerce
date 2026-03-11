@@ -1,34 +1,45 @@
 body{
-font-family:Arial;
+font-family: Arial, sans-serif;
 margin:0;
 background:#121212;
 color:white;
-padding-bottom:70px;
+padding-bottom:80px;
 }
+
+/* HEADER */
 
 header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:15px 40px;
+padding:15px 30px;
 background:#1e1e1e;
 }
 
-.desktop-nav a{
+header h1{
+margin:0;
+color:#ff7a00;
+}
+
+header a{
 color:white;
 text-decoration:none;
 margin-left:20px;
 }
 
+/* HERO */
+
 .hero{
 text-align:center;
-padding:60px;
+padding:60px 20px;
 background:#181818;
 }
 
 .hero span{
 color:#ff7a00;
 }
+
+/* SEARCH & FILTER */
 
 .controls{
 display:flex;
@@ -37,17 +48,19 @@ gap:20px;
 padding:20px;
 }
 
-.controls input,
-.controls select{
+.controls input{
 padding:10px;
-border-radius:6px;
 border:none;
+border-radius:6px;
 }
 
-.section-title{
-text-align:center;
-margin-top:20px;
+.controls select{
+padding:10px;
+border:none;
+border-radius:6px;
 }
+
+/* PRODUCTS GRID */
 
 .products{
 display:grid;
@@ -56,13 +69,14 @@ gap:25px;
 padding:30px;
 }
 
+/* FOOD CARD */
+
 .card{
 background:#1f1f1f;
 border-radius:12px;
 padding:15px;
 text-align:center;
 transition:0.3s;
-cursor:pointer;
 }
 
 .card:hover{
@@ -76,12 +90,24 @@ object-fit:cover;
 border-radius:10px;
 }
 
+.card h3{
+margin:10px 0 5px;
+}
+
+.card p{
+margin:4px 0;
+}
+
+/* RATING */
+
 .rating{
 color:#ffc107;
 margin:5px 0;
 }
 
-.card button{
+/* BUTTON */
+
+button{
 background:#ff7a00;
 border:none;
 padding:10px 15px;
@@ -90,11 +116,20 @@ color:white;
 cursor:pointer;
 }
 
+button:hover{
+background:#ff8f1f;
+}
+
+/* FOOTER */
+
 footer{
 text-align:center;
 padding:20px;
 background:#1e1e1e;
+margin-top:40px;
 }
+
+/* MODAL (FOOD DETAILS) */
 
 .modal{
 display:none;
@@ -128,6 +163,84 @@ cursor:pointer;
 float:right;
 }
 
+/* CART PAGE */
+
+#cart-items{
+padding:20px;
+display:grid;
+gap:15px;
+}
+
+#cart-items img{
+border-radius:8px;
+}
+
+#total{
+padding-left:20px;
+}
+
+/* INPUTS */
+
+input, textarea{
+width:90%;
+padding:10px;
+border-radius:6px;
+border:none;
+margin-left:20px;
+}
+
+textarea{
+height:80px;
+}
+
+/* ADMIN NAV */
+
+.admin-nav{
+display:flex;
+gap:20px;
+padding:10px 20px;
+}
+
+.admin-nav a{
+color:#ff7a00;
+text-decoration:none;
+}
+
+/* DASHBOARD */
+
+.dashboard{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+padding:20px;
+}
+
+.dashboard .card{
+text-align:center;
+}
+
+/* ORDER STATUS BADGES */
+
+.status-pending{
+background:#ffc107;
+padding:4px 8px;
+border-radius:6px;
+color:black;
+}
+
+.status-preparing{
+background:#2196f3;
+padding:4px 8px;
+border-radius:6px;
+color:white;
+}
+
+.status-delivered{
+background:#4caf50;
+padding:4px 8px;
+border-radius:6px;
+color:white;
+}
 
 /* MOBILE NAVIGATION */
 
@@ -139,7 +252,6 @@ width:100%;
 background:#1e1e1e;
 display:flex;
 justify-content:space-around;
-align-items:center;
 padding:10px 0;
 border-top:1px solid #333;
 }
@@ -150,14 +262,12 @@ text-decoration:none;
 display:flex;
 flex-direction:column;
 align-items:center;
-font-size:18px;
 }
 
 .mobile-nav span{
 font-size:12px;
 margin-top:3px;
 }
-
 
 /* CART BADGE */
 
