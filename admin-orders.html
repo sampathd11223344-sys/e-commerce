@@ -39,11 +39,9 @@ let data = docSnap.data();
 let itemsHTML="";
 
 if(data.items){
-
 data.items.forEach(item=>{
 itemsHTML += `<li>${item.name} - ₹${item.price}</li>`;
 });
-
 }
 
 container.innerHTML += `
@@ -93,6 +91,8 @@ const orderRef = doc(db,"orders",id);
 await updateDoc(orderRef,{
 status: status
 });
+
+alert("Order status updated!");
 
 }
 
