@@ -1,16 +1,17 @@
-<!DOCTYPE html><html><head>
+<!DOCTYPE html><html>
+<head>
 <title>Admin Orders</title>
 <link rel="stylesheet" href="style.css">
 </head><body><h1>Admin Order Dashboard</h1><div id="orders"></div><script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 
-import {
-getFirestore,
-collection,
-onSnapshot,
-updateDoc,
-doc
+import { 
+getFirestore, 
+collection, 
+onSnapshot, 
+updateDoc, 
+doc 
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -51,6 +52,12 @@ container.innerHTML += `
 
 <h3>Order ID: ${docSnap.id}</h3>
 
+<p><b>Customer:</b> ${data.customerName || "N/A"}</p>
+
+<p><b>Phone:</b> ${data.phone || "N/A"}</p>
+
+<p><b>Address:</b> ${data.address || "N/A"}</p>
+
 <p><b>Total:</b> ₹${data.total}</p>
 
 <p><b>Status:</b> ${data.status}</p>
@@ -89,4 +96,5 @@ status: status
 
 }
 
-</script></body></html>
+</script></body>
+</html>
