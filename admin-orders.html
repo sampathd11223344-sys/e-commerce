@@ -44,9 +44,11 @@ itemsHTML += `<li>${item.name} - ₹${item.price}</li>`;
 });
 }
 
-container.innerHTML += `
+const orderCard = document.createElement("div");
 
-<div class="card">
+orderCard.className="card";
+
+orderCard.innerHTML=`
 
 <h3>Order ID: ${docSnap.id}</h3>
 
@@ -62,39 +64,44 @@ container.innerHTML += `
 
 <p><b>Items:</b></p>
 
-<ul>
-${itemsHTML}
-</ul>
-
-<button onclick="updateStatus('${docSnap.id}','Preparing')">
-Preparing
-</button>
-
-<button onclick="updateStatus('${docSnap.id}','Delivered')">
-Delivered
-</button>
-
-<hr>
-
-</div>
+<ul>${itemsHTML}</ul>
 
 `;
 
+const preparingBtn = document.createElement("button");
+preparingBtn.innerText="Preparing";
+
+preparingBtn.addEventListener("click",async ()=>{
+
+await updateDoc(doc(db,"orders",docSnap.id),{
+status:"Preparing"
+});
+
+alert("Status updated to Preparing");
+
+});
+
+const deliveredBtn = document.createElement("button");
+deliveredBtn.innerText="Delivered";
+
+deliveredBtn.addEventListener("click",async ()=>{
+
+await updateDoc(doc(db,"orders",docSnap.id),{
+status:"Delivered"
+});
+
+alert("Status updated to Delivered");
+
+});
+
+orderCard.appendChild(preparingBtn);
+orderCard.appendChild(deliveredBtn);
+
+container.appendChild(orderCard);
+
 });
 
 });
-
-window.updateStatus = async function(id,status){
-
-const orderRef = doc(db,"orders",id);
-
-await updateDoc(orderRef,{
-status: status
-});
-
-alert("Order status updated!");
-
-}
 
 </script></body>
 </html>
