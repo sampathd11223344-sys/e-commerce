@@ -1,33 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
+<!DOCTYPE html><html><head>
 <title>Admin Orders</title>
 <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-<h1>Admin Order Dashboard</h1>
-
-<div id="orders"></div>
-
-<script type="module">
+</head><body><h1>Admin Order Dashboard</h1><div id="orders"></div><script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 
-import { 
-getFirestore, 
-collection, 
-onSnapshot, 
-updateDoc, 
-doc 
+import {
+getFirestore,
+collection,
+onSnapshot,
+updateDoc,
+doc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyCIkDJkmm5FvMw1M_F1FviMwcG_httuwcA",
 authDomain: "foodie-mart-3e2a0.firebaseapp.com",
 projectId: "foodie-mart-3e2a0",
-storageBucket: "foodie-mart-3e2a0.firebasestorage.app",
+storageBucket: "foodie-mart-3e2a0.appspot.com",
 messagingSenderId: "591650958110",
 appId: "1:591650958110:web:c453955af7c3bb0c77770f"
 };
@@ -45,19 +35,41 @@ snapshot.forEach((docSnap)=>{
 
 let data = docSnap.data();
 
+let itemsHTML="";
+
+if(data.items){
+
+data.items.forEach(item=>{
+itemsHTML += `<li>${item.name} - ₹${item.price}</li>`;
+});
+
+}
+
 container.innerHTML += `
 
 <div class="card">
 
 <h3>Order ID: ${docSnap.id}</h3>
 
-<p>Total: ₹${data.total}</p>
+<p><b>Total:</b> ₹${data.total}</p>
 
-<p>Status: ${data.status}</p>
+<p><b>Status:</b> ${data.status}</p>
 
-<button onclick="updateStatus('${docSnap.id}','Preparing')">Preparing</button>
+<p><b>Items:</b></p>
 
-<button onclick="updateStatus('${docSnap.id}','Delivered')">Delivered</button>
+<ul>
+${itemsHTML}
+</ul>
+
+<button onclick="updateStatus('${docSnap.id}','Preparing')">
+Preparing
+</button>
+
+<button onclick="updateStatus('${docSnap.id}','Delivered')">
+Delivered
+</button>
+
+<hr>
 
 </div>
 
@@ -77,6 +89,4 @@ status: status
 
 }
 
-</script>
-</body>
-</html>
+</script></body></html>
