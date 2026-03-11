@@ -1,44 +1,25 @@
-<!DOCTYPE html>
-<html>
-
-<head>
+<!DOCTYPE html><html><head>
 <title>Admin Panel</title>
 <link rel="stylesheet" href="style.css">
-</head>
+</head><body><h1>Admin Panel</h1><nav class="admin-nav"><a href="admin.html">Products</a>
 
-<body>
+<a href="admin-orders.html">Orders</a>
 
-<h1>Add Food Product</h1>
+<a href="admin-dashboard.html">Dashboard</a>
 
-<input id="name" placeholder="Food name">
-
-<input id="price" type="number" placeholder="Price">
-
-<select id="category">
+</nav><hr><h2>Add Food Product</h2><input id="name" placeholder="Food name"><input id="price" type="number" placeholder="Price"><select id="category">
 <option value="fastfood">Fast Food</option>
 <option value="drinks">Drinks</option>
 <option value="desserts">Desserts</option>
-</select>
+</select><br><br>
 
-<br><br>
+<input type="file" id="image" onchange="previewImage()"><br><br>
 
-<input type="file" id="image" onchange="previewImage()">
-
-<br><br>
-
-<img id="preview" width="150" style="display:none;border-radius:10px">
-
-<br><br>
+<img id="preview" width="150" style="display:none;border-radius:10px"><br><br>
 
 <button onclick="addProduct()">Add Product</button>
 
-<hr>
-
-<h2>Manage Products</h2>
-
-<div id="products"></div>
-
-<script type="module">
+<hr><h2>Manage Products</h2><div id="products"></div><script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 
@@ -190,8 +171,4 @@ loadProducts();
 
 loadProducts();
 
-</script>
-
-</body>
-</html></html>
-
+</script></body></html>
