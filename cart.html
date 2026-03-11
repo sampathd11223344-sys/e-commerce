@@ -1,31 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
+<!DOCTYPE html><html><head>
 <title>Your Cart</title>
 <link rel="stylesheet" href="style.css">
-</head>
+</head><body><h1>Your Cart</h1><div id="cart-items"></div><h2 id="total"></h2><hr><h2>Delivery Details</h2><input id="customerName" placeholder="Your Name"><br><br>
 
-<body>
+<input id="phone" placeholder="Phone Number"><br><br>
 
-<h1>Your Cart</h1>
-
-<div id="cart-items"></div>
-
-<h2 id="total"></h2>
+<textarea id="address" placeholder="Full Delivery Address"></textarea><br><br>
 
 <button onclick="placeOrder()">Place Order</button>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc }
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+import {
+getFirestore,
+collection,
+addDoc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyCIkDJkmm5FvMw1M_F1FviMwcG_httuwcA",
 authDomain: "foodie-mart-3e2a0.firebaseapp.com",
 projectId: "foodie-mart-3e2a0",
-storageBucket: "foodie-mart-3e2a0.firebasestorage.app",
+storageBucket: "foodie-mart-3e2a0.appspot.com",
 messagingSenderId: "591650958110",
 appId: "1:591650958110:web:c453955af7c3bb0c77770f"
 };
@@ -63,17 +61,37 @@ document.getElementById("total").innerText = "Total: ₹" + total;
 
 window.placeOrder = async function(){
 
+const name = document.getElementById("customerName").value;
+
+const phone = document.getElementById("phone").value;
+
+const address = document.getElementById("address").value;
+
 if(cart.length === 0){
+
 alert("Cart is empty");
+
 return;
+
+}
+
+if(!name || !phone || !address){
+
+alert("Please fill delivery details");
+
+return;
+
 }
 
 await addDoc(collection(db,"orders"),{
 
 items: cart,
 total: total,
-status: "pending",
-time: new Date().toISOString()
+status: "Pending",
+customerName: name,
+phone: phone,
+address: address,
+time: Date.now()
 
 });
 
@@ -81,11 +99,8 @@ alert("Order placed successfully!");
 
 localStorage.removeItem("cart");
 
-location.reload();
+window.location.href="index.html";
 
 }
 
-</script>
-
-</body>
-</html>
+</script></body></html>
