@@ -1,58 +1,46 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
 <title>Foodie Mart</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><!-- Tailwind --><script src="https://cdn.tailwindcss.com"></script></head><body class="bg-black text-white"><!-- HEADER --><header class="flex justify-between items-center px-6 py-4 bg-gray-900 shadow"><h1 class="text-orange-500 text-2xl font-bold">Foodie Mart</h1><nav class="hidden md:flex space-x-6 text-sm"><a href="index.html">Home</a>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><script src="https://cdn.tailwindcss.com"></script><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"><style>
+body{
+font-family:'Poppins',sans-serif;
+}
+</style></head><body class="bg-[#0f0f0f] text-white"><!-- HEADER --><header class="flex justify-between items-center px-6 py-4 bg-[#111] border-b border-gray-800"><h1 class="text-orange-500 text-2xl font-semibold">Foodie Mart</h1><nav class="hidden md:flex gap-6 text-gray-300"><a href="index.html">Home</a>
+<a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+<a href="login.html">Login</a>
 
-<a href="cart.html">
-Cart (<span id="cart-count">0</span>)
-</a><a href="login.html">Login</a>
-
-</nav></header><!-- HERO --><section class="text-center py-12 bg-gray-800"><h2 class="text-4xl font-bold">
-Fast. Fresh. <span class="text-orange-500">Delivered.</span>
-</h2><p class="mt-2 text-gray-400">
-Your favourite meals just one click away.
-</p></section><!-- SEARCH --><div class="flex flex-col md:flex-row justify-center gap-4 p-6"><input
-type="text"
-id="searchInput"
-class="px-4 py-2 rounded text-black w-full md:w-64"
+</nav></header><!-- HERO --><section class="text-center py-14"><h2 class="text-4xl font-semibold">
+Delicious Food <span class="text-orange-500">Delivered Fast</span>
+</h2><p class="text-gray-400 mt-2">
+Order your favorite meals instantly
+</p></section><!-- SEARCH --><div class="flex justify-center px-6"><div class="bg-[#1a1a1a] p-3 rounded-xl flex gap-3 w-full max-w-xl"><input id="searchInput"
 placeholder="Search food..."
-onkeyup="filterProducts()"
+class="bg-transparent outline-none flex-1 text-white"
+onkeyup="filterProducts()">
 
-«»
-
-<select
-id="categoryFilter"
-class="px-4 py-2 rounded text-black w-full md:w-48"
-onchange="filterProducts()"
-
-«»
+<select id="categoryFilter"
+class="bg-[#2a2a2a] px-3 rounded"
+onchange="filterProducts()">
 
 <option value="all">All</option>
 <option value="fastfood">Fast Food</option>
 <option value="drinks">Drinks</option>
-<option value="desserts">Desserts</option></select></div><!-- TOP RATED --><h2 class="text-xl font-bold px-6">🔥 Top Rated Foods</h2><section id="topFoods"
-class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-6 py-4">
-</section><!-- ALL FOODS --><h2 class="text-xl font-bold px-6">🍔 All Foods</h2><section id="product-list"
-class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-6 pb-24">
-</section><!-- FOOTER --><footer class="text-center py-6 bg-gray-900 mt-6">© 2026 Foodie Mart • Built by Sampath
+<option value="desserts">Desserts</option></select></div></div><!-- TOP FOODS --><section class="px-6 mt-10"><h2 class="text-xl font-semibold mb-4">🔥 Top Rated</h2><div id="topFoods" class="grid grid-cols-2 md:grid-cols-4 gap-5"></div></section><!-- ALL FOODS --><section class="px-6 mt-10 pb-24"><h2 class="text-xl font-semibold mb-4">🍔 All Foods</h2><div id="product-list" class="grid grid-cols-2 md:grid-cols-4 gap-5"></div></section><!-- MODAL --><div id="foodModal"
+class="hidden fixed inset-0 bg-black/70 flex justify-center items-center"><div class="bg-[#1a1a1a] p-5 rounded-xl w-80"><button onclick="closeModal()" class="text-gray-400 mb-2">✕</button>
 
-</footer><!-- MODAL --><div id="foodModal"
-class="hidden fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center"><div class="bg-gray-900 p-6 rounded-lg text-center w-80"><button onclick="closeModal()" class="text-right w-full text-gray-400">✖</button>
-
-<img id="modalImage" class="rounded-lg mb-3"><h2 id="modalName" class="text-xl font-bold"></h2><p id="modalPrice" class="text-orange-400"></p><div class="text-yellow-400">⭐ ⭐ ⭐ ⭐ ☆</div><button id="modalCartBtn"
-class="mt-3 bg-orange-500 px-4 py-2 rounded w-full">
+<img id="modalImage" class="rounded-lg mb-3"><h2 id="modalName" class="font-semibold"></h2><p id="modalPrice" class="text-orange-500"></p><div class="text-yellow-400">⭐ ⭐ ⭐ ⭐ ☆</div><button id="modalCartBtn"
+class="mt-3 w-full bg-orange-500 py-2 rounded-lg hover:bg-orange-600">
 Add to Cart
 </button>
 
-</div></div><!-- MOBILE NAV --><div class="fixed bottom-0 left-0 w-full bg-gray-900 flex justify-around py-2 border-t border-gray-700 md:hidden"><a href="index.html" class="text-center">
-🏠<br><span class="text-xs">Home</span>
-</a><a href="cart.html" class="relative text-center">
+</div></div><!-- MOBILE NAV --><div class="fixed bottom-0 w-full bg-[#111] flex justify-around py-3 border-t border-gray-800 md:hidden"><a href="index.html">🏠<br><span class="text-xs">Home</span></a>
+
+<a href="cart.html" class="relative">
 🛒
 <span id="mobile-cart-count"
-class="absolute top-0 right-2 bg-red-500 text-xs px-1 rounded">
-0
-</span>
+class="absolute -top-1 right-2 bg-red-500 text-xs px-1 rounded">0</span>
 <br><span class="text-xs">Cart</span>
-</a><a href="login.html" class="text-center">
-👤<br><span class="text-xs">Login</span>
-</a></div><script type="module" src="script.js"></script></body>
+</a><a href="login.html">👤<br><span class="text-xs">Login</span></a>
+
+</div><script type="module" src="script.js"></script></body>
 </html>
